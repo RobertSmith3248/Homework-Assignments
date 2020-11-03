@@ -1,1 +1,108 @@
-code here
+
+#repository: https://github.com/RobertSmith3248/Homework-Assignments
+
+import sys
+import math
+
+#open both pdb files
+f = open("2FA9noend.pdb")
+    #pdb1, v
+lines1 = f.readlines()
+m = open("2FA9noend2mov.pdb")
+    #pdb2, w
+lines2 = m.readlines()
+
+#input to ask the user what they would like to do
+a = input("Would you like to return the pdb file (1 or 2) or calculate the RMSD [1/2/rmsd]? ")
+pdb1 = "1" #read and print pdb 1 in the terminal
+pdb2 = "2" #read and print pdb 2 in the terminal
+rmsd = "rmsd" #calculate and print the rmsd
+
+
+for line in lines1:
+	#x coordinates for pdb 1
+	vx = float(line[30:38])
+
+	#y coordinates for pdb 1
+	vy = float(line[39:46])
+
+	#z coordinates for pdb 1
+	vz = float(line[47:54])
+    #convert the 3 columns of the specified widths to floats to use in the rmsd calculation in f3()
+
+
+for line in lines2:
+	#x coordinates for pdb 2
+    wx = float(line[30:38])
+
+	#y coordinates for pdb 2
+    wy = float(line[39:46])
+
+	#z coordinates for pdb 2
+    wz = float(line[47:54])
+    #convert the 3 columns of the specified widths to floats to use in the rmsd calculation in f3()
+
+#setting each to floats is necessary because the numbers themselves are floats
+    #trying to set them to ints (int()) would return an error because the numbers being used are not integers
+
+
+#n = number of lines
+n = 1337
+n1 = 1/1337
+
+#define the difference variables for use in f3()
+xdiff = 0
+ydiff = 0
+zdiff = 0
+
+def f1():
+    #return pdb 1
+    for line1 in lines1:
+        print(line1)
+        #print pdb 1 line by line in ordered columns to avoid it printing as a garbled mess
+    print("Done!")
+
+def f2():
+    #return pdb 2
+    for line2 in lines2:
+        print(line2)
+        #does the same as f1 with pdb2
+    print("Done!")
+
+def f3():
+    #calculate and return rmsd
+    #n = number of lines (atoms)
+    n = 1337
+    n1 = 1/1337
+
+    #define the difference variables for use below
+    xdiff = 0
+    ydiff = 0
+    zdiff = 0
+
+    for record in zip(lines1, lines2):
+        #take the difference between the corresponding coordinates in both pdb files
+        #the += means to increment the operation through every line instead of applying it to only one
+        xdiff += (vx - wx)
+        ydiff += (vy - wy)
+        zdiff += (vz - wz)
+
+    #square each difference
+    xdiff2 = xdiff ** 2
+    ydiff2 = ydiff ** 2
+    zdiff2 = zdiff ** 2
+
+    #calculate the radicand
+    r = (n1) * (xdiff2 + ydiff2 + zdiff2)
+
+    rmsd = math.sqrt(r)
+    print("The RMSD is", round(rmsd, 3))
+    #calculate and return the rmsd rounded to 3 decimal places
+
+#if/elif statement to execute the correct functions depending the on the user's choice
+if a == pdb1:
+    f1()
+elif a == pdb2:
+    f2()
+elif a == rmsd:
+    f3()
